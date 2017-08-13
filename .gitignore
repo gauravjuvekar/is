@@ -1,0 +1,7 @@
+*.out
+*tags
+*.taghl
+*.o
+*.swp
+*.swo
+*~
