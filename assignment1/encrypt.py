@@ -2,6 +2,7 @@
 import argparse
 import binascii
 import getpass
+import io
 import functools
 import random
 
@@ -34,9 +35,14 @@ def reduce_key(key):
     return key
 
 
-def encrypt(infile, outfile, key):
+def get_seed(size=BLOCK_SIZE):
     seed = [random.randrange(256) for x in range(BLOCK_SIZE)]
     seed = bytes(seed)
+    return seed
+
+
+def encrypt(infile, outfile, key):
+    seed = get_seed(BLOCK_SIZE)
     outfile.write(seed)
     assert len(seed) == BLOCK_SIZE
     last_cipher_block = seed
@@ -90,6 +96,22 @@ def decrypt(infile, outfile, key):
         plain_block = xor(cipher_block, key, last_cipher_block)
         last_cipher_block = cipher_block
         deferred_write = plain_block
+
+
+def encrypt_bytes(in_bytes, key):
+    in_file = io.BytesIO(in_bytes)
+    out_file = io.BytesIO()
+    encrypt(in_file, out_file, key)
+    out_file.seek(io.SEEK_SET)
+    return out_file.read()
+
+
+def decrypt_bytes(in_bytes, key):
+    in_file = io.BytesIO(in_bytes)
+    out_file = io.BytesIO()
+    decrypt(in_file, out_file, key)
+    out_file.seek(io.SEEK_SET)
+    return out_file.read()
 
 
 if __name__ == '__main__':
