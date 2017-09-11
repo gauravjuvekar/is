@@ -31,11 +31,7 @@ def matrix_mod_inv(A, mod, inv_table):
             adj[i][j] = (
                 (-1)**(i + j) *
                 int(round(np.linalg.det(minor(A, j, i))))) % mod
-    print(A)
-    print(adj)
-    print(inv_table)
     det_inv = int(round(np.linalg.det(A))) % mod
-    print(det_inv)
     if inv_table[det_inv] is None:
         raise ValueError("Determinant is not invertible")
     else:
