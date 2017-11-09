@@ -1,0 +1,169 @@
+\ProvidesPackage{assignment}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Package imports
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Use Computer Modern fonts at all sizes
+% Modular documents
+\usepackage{subfiles}
+\RequirePackage{fix-cm}
+% Better a4 support
+\usepackage[a4paper]{geometry}
+% Select font encoding
+\usepackage[T1]{fontenc}
+% Compatibility of source files in various encodings
+\usepackage[utf8]{inputenc}
+% Easier formatting of headers and footers
+\usepackage{fancyhdr}
+% All color rules
+\usepackage{color}
+% i18n
+\usepackage{babel}
+% Decorate maths (empheq, etc)
+\usepackage{amsmath}
+% Long text in a tabular environment
+\usepackage{tabularx}
+% Long text in a tabular environment
+\usepackage{tabulary}
+% Cells in tables with borders
+\usepackage{makecell}
+% Customize captions in floats
+\usepackage{caption}
+% Customize captions for subfigures
+\usepackage{subcaption}
+% Row-span cells
+\usepackage{multirow}
+% Metricate
+\usepackage{siunitx}
+% Unix file paths
+\usepackage[obeyspaces]{url}
+% Table of contents settings
+\usepackage{tocloft}
+% ISO datetime
+\usepackage[calc]{datetime2}
+% Better tables
+\usepackage{booktabs}
+% Graphics
+\usepackage{tikz}
+\usetikzlibrary{shapes, arrows, positioning}
+% Hypertext links in PDFs
+\usepackage[unicode=true,pdfusetitle,%
+bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,%
+breaklinks=false,pdfborder={0 0 0},backref=false,colorlinks=false]%
+{hyperref}
+% Glossaries (must be loaded after hyperref)
+% \usepackage[automake,nomain,acronym]{glossaries-extra}
+
+% Program code
+\usepackage{listings}
+\definecolor{codeGreen}{rgb}{0,0.6,0}
+\definecolor{codeGray}{rgb}{0.5,0.5,0.5}
+\definecolor{codePurple}{rgb}{0.58,0,0.82}
+\definecolor{codeBackColor}{rgb}{0.95,0.95,0.92}
+% C code style
+\lstdefinestyle{codeStyleC}{%
+  backgroundcolor=\color{codeBackColor},
+  commentstyle=\color{codeGreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\color{codeGray},
+  stringstyle=\color{codePurple},
+  basicstyle=\small\tt,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  language=C,
+  tabsize=4
+}
+
+% Python code style
+\lstdefinestyle{codeStylePy3}{%
+  backgroundcolor=\color{codeBackColor},
+  commentstyle=\color{codeGreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\color{codeGray},
+  stringstyle=\color{codePurple},
+  basicstyle=\small\tt,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  language=python,
+  tabsize=4
+}
+
+% .vimrc code style
+\lstdefinestyle{codeStyleVimrc}{%
+  backgroundcolor=\color{codeBackColor},
+  commentstyle=\color{codeGreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\color{codeGray},
+  stringstyle=\color{codePurple},
+  basicstyle=\small\tt,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=5pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4
+}
+
+
+% To support svg
+\usepackage{graphicx}
+% Include svg images rendered via inkscape
+% Check if inkscape needs to be run again
+\newcommand{\executefortarget}[3]{%
+  \IfFileExists{#1}{%
+    \ifnum\pdfstrcmp{\pdffilemoddate{#2}}%
+    {\pdffilemoddate{#1}}>0%
+    {\immediate\write18{#3}}\fi%
+  }{%
+    \immediate\write18{#3}%
+  }%
+}
+\newcommand{\includesvg}[1]{%
+  \executefortarget{#1.pdf}{#1.svg}%
+  {inkscape -z -D --file=#1.svg --export-pdf=#1.pdf --export-latex}%
+  \input{#1.pdf_tex}%
+}
+
+% Code listings convenience command
+\renewcommand{\lstlistingname}{Code}
+% Horizontal rule
+\newcommand{\horrule}[1]{\noindent\makebox[\linewidth]{\rule{\textwidth}{#1}}}
+
+% Bibliography
+% \usepackage[style=verbose,alldates=iso8601]{biblatex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Using the packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+% Section depth to number
+\setcounter{secnumdepth}{3}
+% Section depth to add to TOC
+\setcounter{tocdepth}{3}
+
+% Numbering for everything
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+\numberwithin{table}{section}
+% Set linespread when normalsize is used
+\linespread{1.2}
+
+% Set the graphics path
+\graphicspath{{images/}}
